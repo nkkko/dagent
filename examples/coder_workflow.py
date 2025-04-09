@@ -70,7 +70,7 @@ class WorkflowSimulator:
         
         # Set up A2A integration
         a2a = A2AIntegration("http://localhost:8080")
-        agent.a2a = a2a
+        agent._a2a_client = a2a
         
         # Communication tools are already registered in the agent
         
