@@ -5,7 +5,7 @@ import os
 import dotenv
 from typing import Any, Dict, Optional
 
-from google.adk.models import GoogleLLM
+from google.adk.models import Gemini
 from google.adk.tools import FunctionTool
 from agent.daytona_agent import DaytonaSandboxAgent
 from agent.a2a_integration import A2AIntegration
@@ -75,10 +75,10 @@ def create_agent(args: argparse.Namespace) -> DaytonaSandboxAgent:
     """
     # Create LLM with API key if available
     if args.gemini_key:
-        llm = GoogleLLM(api_key=args.gemini_key)
+        llm = Gemini(model="gemini-1.5-flash")  # API key is handled through environment variables
         logger.info("Using Gemini LLM with provided API key")
     else:
-        llm = GoogleLLM()
+        llm = Gemini(model="gemini-1.5-flash")
         logger.info("Using Gemini LLM with default configuration")
     
     # Log configuration

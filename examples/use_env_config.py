@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.agent.daytona_agent import DaytonaSandboxAgent
 from src.agent.tools import DaytonaToolset
-from google.adk.models import GoogleLLM
+from google.adk.models import Gemini
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -55,16 +55,11 @@ def create_agent_with_env_config() -> DaytonaSandboxAgent:
     logger.info(f"Daytona API Target: {env.get('DAYTONA_API_TARGET')}")
     logger.info(f"A2A Host URL: {env.get('A2A_HOST_URL')}")
     
-    # Get Gemini API key
-    gemini_api_key = env.get('GEMINI_API_KEY')
+    # Get Gemini API key (handled through environment variables)
     
-    # Create LLM with API key if available
-    if gemini_api_key:
-        llm = GoogleLLM(api_key=gemini_api_key)
-        logger.info("Using Gemini LLM with provided API key")
-    else:
-        llm = GoogleLLM()
-        logger.info("Using Gemini LLM with default configuration")
+    # Create Gemini LLM
+    llm = Gemini(model="gemini-1.5-flash")
+    logger.info("Using Gemini LLM with configuration from environment")
     
     # Create agent
     agent = DaytonaSandboxAgent(

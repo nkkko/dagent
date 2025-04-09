@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.agent.daytona_agent import DaytonaSandboxAgent
 from src.agent.a2a_integration import A2AIntegration
-from google.adk.models import GoogleLLM
+from google.adk.models import Gemini
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -60,7 +60,7 @@ class WorkflowSimulator:
             Configured Daytona agent.
         """
         # Create LLM
-        llm = GoogleLLM()
+        llm = Gemini(model="gemini-1.5-flash")
         
         # Create agent
         agent = DaytonaSandboxAgent(
