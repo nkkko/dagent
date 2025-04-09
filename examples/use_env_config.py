@@ -58,7 +58,7 @@ def create_agent_with_env_config() -> DaytonaSandboxAgent:
     # Get Gemini API key (handled through environment variables)
     
     # Create Gemini LLM
-    llm = Gemini(model="gemini-1.5-flash")
+    llm = Gemini(model="gemini-2.0-flash")
     logger.info("Using Gemini LLM with configuration from environment")
     
     # Create agent

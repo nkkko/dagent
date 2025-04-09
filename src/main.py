@@ -75,10 +75,10 @@ def create_agent(args: argparse.Namespace) -> DaytonaSandboxAgent:
     """
     # Create LLM with API key if available
     if args.gemini_key:
-        llm = Gemini(model="gemini-1.5-flash")  # API key is handled through environment variables
+        llm = Gemini(model="gemini-2.0-flash")  # API key is handled through environment variables
         logger.info("Using Gemini LLM with provided API key")
     else:
-        llm = Gemini(model="gemini-1.5-flash")
+        llm = Gemini(model="gemini-2.0-flash")
         logger.info("Using Gemini LLM with default configuration")
     
     # Log configuration

@@ -24,7 +24,7 @@ def create_agent() -> DaytonaSandboxAgent:
         Configured agent.
     """
     # Create LLM
-    llm = Gemini(model="gemini-1.5-flash")
+    llm = Gemini(model="gemini-2.0-flash")
     
     # Create agent
     agent = DaytonaSandboxAgent(

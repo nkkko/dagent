@@ -24,45 +24,60 @@ cd dagent
 pip install -e .
 ```
 
-## Configuration
+## Setup
 
-### Environment Variables
+1. Create a virtual environment and activate it:
+   ```bash
+   python -m venv env
+   source env/bin/activate  # On Windows: env\Scripts\activate
+   ```
 
-Create a `.env` file in the root directory with the following variables:
+2. Install the package and dependencies:
+   ```bash
+   pip install -e .
+   ```
 
-```
-# Daytona API Configuration
-DAYTONA_API_KEY=your_daytona_api_key_here
-DAYTONA_API_URL=https://app.daytona.io/api
-DAYTONA_API_TARGET=us
+3. Set up environment variables by copying the example file and filling in your API keys:
+   ```bash
+   cp .env.example .env
+   ```
 
-# A2A Configuration
-A2A_HOST_URL=http://localhost:8080
+4. Edit the `.env` file and add your API keys:
+   ```
+   # Daytona API Configuration
+   DAYTONA_API_KEY=your_daytona_api_key_here
+   DAYTONA_API_URL=https://app.daytona.io/api
+   DAYTONA_API_TARGET=us
 
-# LLM Configuration
-GEMINI_API_KEY=your_gemini_api_key_here
-```
+   # A2A Configuration
+   A2A_HOST_URL=http://localhost:8080
 
-You can copy the `.env.example` file and update it with your credentials:
+   # LLM Configuration
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
 
+## Running the Agent
+
+### Method 1: Using the run script (recommended)
+
+Run the agent with environment variables from `.env`:
 ```bash
-cp .env.example .env
-# Edit .env with your API keys
-```
-
-## Usage
-
-### Running the Agent
-
-```bash
-# Run with environment variables from .env
 python run.py
-
-# Run with custom settings via command line
-python -m src.main --host-url http://a2a-host:8080 --api-url http://daytona-api:8090 --api-key your-daytona-key --gemini-key your-gemini-key --verbose
 ```
 
-### Example Usage
+### Method 2: Using the module directly
+
+Run with environment variables from `.env`:
+```bash
+python -m src.main
+```
+
+Or run with custom settings:
+```bash
+python -m src.main --host-url http://a2a-host:8080 --api-url https://app.daytona.io/api --api-key your-daytona-key --gemini-key your-gemini-key --verbose
+```
+
+## Running Examples
 
 The `examples/` directory contains sample code for working with the agent:
 
@@ -71,10 +86,22 @@ The `examples/` directory contains sample code for working with the agent:
 - `examples/use_env_config.py`: Shows how to use environment variables with the agent
 
 Run an example:
-
 ```bash
 python -m examples.use_env_config
 ```
+
+## Interacting with the Agent
+
+Once running, the agent will listen for connections in the terminal window. The agent will log information about its configuration and any operations it performs.
+
+To interrupt the agent, press Ctrl+C in the terminal window.
+
+## Troubleshooting
+
+- If you encounter module-related errors, make sure you've installed the package with `pip install -e .`
+- If the code complains about missing classes or methods, it may be due to version differences in the ADK Python SDK
+- For API keys, make sure they're properly set in your `.env` file or passed as command-line arguments
+- For more verbose logging, use the `--verbose` flag
 
 ## Communication with Coder Agent
 
@@ -123,6 +150,7 @@ dagent/
 - Access to the Google ADK Python SDK
 - Access to the A2A protocol implementation
 - Daytona API key (get one from https://app.daytona.io/)
+- Gemini API key
 
 ## License
 
