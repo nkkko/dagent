@@ -17,11 +17,34 @@ This agent manages the lifecycle of Daytona sandbox environments, including crea
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/dagent.git
+git clone https://github.com/nkkko/dagent.git
 cd dagent
 
 # Install the package
 pip install -e .
+```
+
+## Configuration
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+# Daytona API Configuration
+DAYTONA_API_KEY=your_daytona_api_key_here
+DAYTONA_API_URL=https://app.daytona.io/api
+DAYTONA_API_TARGET=us
+
+# A2A Configuration
+A2A_HOST_URL=http://localhost:8080
+```
+
+You can copy the `.env.example` file and update it with your credentials:
+
+```bash
+cp .env.example .env
+# Edit .env with your API keys
 ```
 
 ## Usage
@@ -29,18 +52,26 @@ pip install -e .
 ### Running the Agent
 
 ```bash
-# Run with default settings
-python -m src.main
+# Run with environment variables from .env
+python run.py
 
-# Run with custom settings
+# Run with custom settings via command line
 python -m src.main --host-url http://a2a-host:8080 --api-url http://daytona-api:8090 --api-key your-api-key --verbose
 ```
 
-### Environment Variables
+### Example Usage
 
-- `DAGENT_HOST_URL`: URL for the A2A host server
-- `DAGENT_API_URL`: URL for the Daytona API
-- `DAGENT_API_KEY`: API key for Daytona API authentication
+The `examples/` directory contains sample code for working with the agent:
+
+- `examples/coder_communication.py`: Demonstrates basic communication with the coder agent
+- `examples/coder_workflow.py`: Simulates a complete workflow between agents
+- `examples/use_env_config.py`: Shows how to use environment variables with the agent
+
+Run an example:
+
+```bash
+python -m examples.use_env_config
+```
 
 ## Communication with Coder Agent
 
@@ -71,6 +102,8 @@ dagent/
 ├── SPECS.md          # Specification document
 ├── README.md         # This README
 ├── setup.py          # Package setup
+├── .env.example      # Example environment variables
+├── examples/         # Example usage scripts
 └── src/
     ├── main.py       # Main application
     ├── config.py     # Configuration
@@ -86,6 +119,7 @@ dagent/
 - Python 3.8 or higher
 - Access to the Google ADK Python SDK
 - Access to the A2A protocol implementation
+- Daytona API key (get one from https://app.daytona.io/)
 
 ## License
 

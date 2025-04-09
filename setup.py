@@ -13,6 +13,7 @@ setup(
         "google-adk",  # ADK Python SDK
         "requests>=2.25.0",
         "pydantic>=1.8.0",
+        "python-dotenv>=0.19.0",  # For environment variables
     ],
     python_requires=">=3.8",
     entry_points={

@@ -1,9 +1,12 @@
 """Main application for Daytona Sandbox Orchestration Agent."""
 import argparse
 import logging
+import os
+import dotenv
 from typing import Any, Dict, Optional
 
 from google.adk.models import GoogleLLM
+from google.adk.tools import FunctionTool
 from agent.daytona_agent import DaytonaSandboxAgent
 from agent.a2a_integration import A2AIntegration
 from agent.tools import DaytonaToolset
@@ -12,26 +15,41 @@ from agent.tools import DaytonaToolset
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Load environment variables from .env file
+dotenv.load_dotenv()
+
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments.
     
     Returns:
         Parsed arguments.
     """
+    # Get default values from environment variables
+    default_host_url = os.getenv("A2A_HOST_URL", "http://localhost:8080")
+    default_api_url = os.getenv("DAYTONA_API_URL", "http://localhost:8090")
+    default_api_key = os.getenv("DAYTONA_API_KEY")
+    default_api_target = os.getenv("DAYTONA_API_TARGET", "us")
+    
     parser = argparse.ArgumentParser(description="Daytona Sandbox Orchestration Agent")
     parser.add_argument(
         "--host-url", 
-        default="http://localhost:8080",
-        help="URL for the A2A host server"
+        default=default_host_url,
+        help=f"URL for the A2A host server (default: {default_host_url})"
     )
     parser.add_argument(
         "--api-url", 
-        default="http://localhost:8090",
-        help="URL for the Daytona API"
+        default=default_api_url,
+        help=f"URL for the Daytona API (default: {default_api_url})"
     )
     parser.add_argument(
         "--api-key", 
+        default=default_api_key,
         help="API key for Daytona API authentication"
+    )
+    parser.add_argument(
+        "--api-target", 
+        default=default_api_target,
+        help=f"Daytona API target region (default: {default_api_target})"
     )
     parser.add_argument(
         "--verbose", 
@@ -52,11 +70,16 @@ def create_agent(args: argparse.Namespace) -> DaytonaSandboxAgent:
     # Create LLM
     llm = GoogleLLM()
     
+    # Log configuration
+    logger.info(f"Using Daytona API URL: {args.api_url}")
+    logger.info(f"Using Daytona API Target: {args.api_target}")
+    logger.info(f"Using A2A Host URL: {args.host_url}")
+    
     # Create agent
     agent = DaytonaSandboxAgent(
         name="daytona-sandbox-agent",
         model=llm,
-        description="An agent that orchestrates Daytona sandbox environments and communicates with other agents.",
+        description=f"An agent that orchestrates Daytona sandbox environments ({args.api_target}) and communicates with other agents.",
         instruction="""You are a Daytona sandbox orchestration agent. Your primary responsibilities are:
 1. Creating and managing Daytona sandbox environments
 2. Communicating with other agents, especially the coder agent, to coordinate development activities
