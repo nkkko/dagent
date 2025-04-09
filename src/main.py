@@ -29,6 +29,7 @@ def parse_args() -> argparse.Namespace:
     default_api_url = os.getenv("DAYTONA_API_URL", "http://localhost:8090")
     default_api_key = os.getenv("DAYTONA_API_KEY")
     default_api_target = os.getenv("DAYTONA_API_TARGET", "us")
+    default_gemini_key = os.getenv("GEMINI_API_KEY")
     
     parser = argparse.ArgumentParser(description="Daytona Sandbox Orchestration Agent")
     parser.add_argument(
@@ -52,6 +53,11 @@ def parse_args() -> argparse.Namespace:
         help=f"Daytona API target region (default: {default_api_target})"
     )
     parser.add_argument(
+        "--gemini-key",
+        default=default_gemini_key,
+        help="API key for Gemini LLM"
+    )
+    parser.add_argument(
         "--verbose", 
         action="store_true",
         help="Enable verbose logging"
@@ -67,8 +73,13 @@ def create_agent(args: argparse.Namespace) -> DaytonaSandboxAgent:
     Returns:
         Configured agent.
     """
-    # Create LLM
-    llm = GoogleLLM()
+    # Create LLM with API key if available
+    if args.gemini_key:
+        llm = GoogleLLM(api_key=args.gemini_key)
+        logger.info("Using Gemini LLM with provided API key")
+    else:
+        llm = GoogleLLM()
+        logger.info("Using Gemini LLM with default configuration")
     
     # Log configuration
     logger.info(f"Using Daytona API URL: {args.api_url}")

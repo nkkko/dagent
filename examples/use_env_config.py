@@ -31,6 +31,7 @@ def load_environment() -> Dict[str, str]:
         "DAYTONA_API_URL": os.getenv("DAYTONA_API_URL"),
         "DAYTONA_API_TARGET": os.getenv("DAYTONA_API_TARGET"),
         "A2A_HOST_URL": os.getenv("A2A_HOST_URL"),
+        "GEMINI_API_KEY": os.getenv("GEMINI_API_KEY"),
     }
     
     # Check for missing environment variables
@@ -54,8 +55,16 @@ def create_agent_with_env_config() -> DaytonaSandboxAgent:
     logger.info(f"Daytona API Target: {env.get('DAYTONA_API_TARGET')}")
     logger.info(f"A2A Host URL: {env.get('A2A_HOST_URL')}")
     
-    # Create LLM
-    llm = GoogleLLM()
+    # Get Gemini API key
+    gemini_api_key = env.get('GEMINI_API_KEY')
+    
+    # Create LLM with API key if available
+    if gemini_api_key:
+        llm = GoogleLLM(api_key=gemini_api_key)
+        logger.info("Using Gemini LLM with provided API key")
+    else:
+        llm = GoogleLLM()
+        logger.info("Using Gemini LLM with default configuration")
     
     # Create agent
     agent = DaytonaSandboxAgent(

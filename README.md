@@ -38,6 +38,9 @@ DAYTONA_API_TARGET=us
 
 # A2A Configuration
 A2A_HOST_URL=http://localhost:8080
+
+# LLM Configuration
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 You can copy the `.env.example` file and update it with your credentials:
@@ -56,7 +59,7 @@ cp .env.example .env
 python run.py
 
 # Run with custom settings via command line
-python -m src.main --host-url http://a2a-host:8080 --api-url http://daytona-api:8090 --api-key your-api-key --verbose
+python -m src.main --host-url http://a2a-host:8080 --api-url http://daytona-api:8090 --api-key your-daytona-key --gemini-key your-gemini-key --verbose
 ```
 
 ### Example Usage
