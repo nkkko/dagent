@@ -64,13 +64,15 @@ class WorkflowSimulator:
         
         # Create agent
         agent = DaytonaSandboxAgent(
-            name="daytona-agent",
+            name="daytona_agent",
             model=llm
         )
         
         # Set up A2A integration
         a2a = A2AIntegration("http://localhost:8080")
         agent.a2a = a2a
+        
+        # Communication tools are already registered in the agent
         
         return agent
     

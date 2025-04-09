@@ -28,7 +28,7 @@ def create_agent() -> DaytonaSandboxAgent:
     
     # Create agent
     agent = DaytonaSandboxAgent(
-        name="daytona-sandbox-agent",
+        name="daytona_sandbox_agent",
         model=llm,
         description="An agent that orchestrates Daytona sandbox environments",
     )

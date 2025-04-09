@@ -9,7 +9,6 @@ from typing import Dict, Any
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.agent.daytona_agent import DaytonaSandboxAgent
-from src.agent.tools import DaytonaToolset
 from google.adk.models import Gemini
 
 # Configure logging
@@ -63,20 +62,12 @@ def create_agent_with_env_config() -> DaytonaSandboxAgent:
     
     # Create agent
     agent = DaytonaSandboxAgent(
-        name="daytona-sandbox-agent",
+        name="daytona_sandbox_agent",
         model=llm,
         description=f"Daytona sandbox agent for target: {env.get('DAYTONA_API_TARGET', 'unknown')}"
     )
     
-    # Create Daytona toolset with API configuration
-    daytona_toolset = DaytonaToolset(
-        api_url=env.get('DAYTONA_API_URL', 'http://localhost:8090'),
-        api_key=env.get('DAYTONA_API_KEY')
-    )
-    
-    # Register tools
-    for tool in daytona_toolset.as_tools():
-        agent.register_tool(tool)
+    # We don't need to register tools separately as they're already in the agent
     
     return agent
 

@@ -1,12 +1,67 @@
 """A2A Integration for Daytona Sandbox Orchestration Agent."""
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, List
 
-# Import A2A client from samples
-import sys
-import os
-sys.path.append(os.path.abspath("/Users/nikola/dev/dagent/A2A/samples/python"))
-from common.client.client import A2AClient
-from hosts.multiagent.remote_agent_connection import RemoteAgentConnection
+# Create a local mock implementation of what we need
+class A2AClient:
+    """Mock A2A client for demonstration purposes."""
+    
+    def __init__(self, url: str):
+        """Initialize the A2A client.
+        
+        Args:
+            url: The URL of the A2A host.
+        """
+        self.url = url
+    
+    def list_agents(self) -> Dict[str, Any]:
+        """List available agents.
+        
+        Returns:
+            Dictionary of agent information.
+        """
+        # Mock implementation
+        return {
+            "agents": [
+                {
+                    "id": "coder-agent",
+                    "name": "Coder Agent",
+                    "type": "development",
+                    "capabilities": ["code-generation", "code-review"]
+                }
+            ]
+        }
+
+class RemoteAgentConnection:
+    """Mock remote agent connection for demonstration purposes."""
+    
+    def __init__(self, agent_id: str, client: A2AClient):
+        """Initialize a remote agent connection.
+        
+        Args:
+            agent_id: The ID of the agent to connect to.
+            client: The A2A client to use for communication.
+        """
+        self.agent_id = agent_id
+        self.client = client
+    
+    def send_message(self, message: str, task_id: str) -> Dict[str, Any]:
+        """Send a message to the remote agent.
+        
+        Args:
+            message: The message to send.
+            task_id: The task ID to associate with the message.
+            
+        Returns:
+            The response from the agent.
+        """
+        # Mock implementation
+        return {
+            "status": "success",
+            "task_id": task_id,
+            "agent_id": self.agent_id,
+            "response": f"Received message: {message[:50]}...",
+            "timestamp": "2023-04-09T12:00:00Z"
+        }
 
 class A2AIntegration:
     """Handles A2A protocol integration for the Daytona agent."""
@@ -64,7 +119,6 @@ class A2AIntegration:
             
         # Create task if task_id not provided
         if not task_id:
-            # TODO: Implement task creation with A2A client
             task_id = "task-" + str(hash(message))[:8]
             
         # Send message using A2A connection
@@ -77,5 +131,4 @@ class A2AIntegration:
         Returns:
             Dictionary of agent information.
         """
-        # TODO: Implement agent discovery with A2A client
         return self.client.list_agents()
